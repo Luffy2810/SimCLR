@@ -13,6 +13,10 @@ import seaborn as sns
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 dataloader_training_dataset_mutated = get_mutated_dataloader()
 
+resnet=make_model().to(device)
+optimizer = optim.SGD(resnet.parameters(), lr=0.001, momentum=0.9)
+losses_train = []
+num_epochs = 10
 
 
 if not os.path.exists('results'):
@@ -25,11 +29,8 @@ if(os.path.isfile("results/model.pth")):
     losses_train = list(temp['arr_0'])
 
 
-resnet=make_model().to(device)
-losses_train = []
-num_epochs = 10
 
-optimizer = optim.SGD(resnet.parameters(), lr=0.001, momentum=0.9)
+
 
 def get_mean_of_list(L):
     return sum(L) / len(L)
