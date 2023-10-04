@@ -8,7 +8,7 @@ import torch.optim as optim
 import os
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from tqdm import tqdm
 
 
 
@@ -25,9 +25,11 @@ def train():
     dataloader_training_dataset_mutated = get_mutated_dataloader()
 
     resnet=make_model().to(device)
-    optimizer = optim.SGD(resnet.parameters(), lr=0.001, momentum=0.9)
+    optimizer = torch.optim.Adam(resnet.parameters(),0.0024, weight_decay=1e-4)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=len(dataloader_training_dataset_mutated), eta_min=0,
+                                                           last_epoch=-1)
     losses_train = []
-    num_epochs = 10
+    num_epochs = 200
 
 
     if not os.path.exists('results'):
@@ -44,7 +46,7 @@ def train():
 
         epoch_losses_train = []
 
-        for (_, sample_batched) in enumerate(dataloader_training_dataset_mutated):
+        for (_, sample_batched) in enumerate(tqdm(dataloader_training_dataset_mutated)):
 
             optimizer.zero_grad()
             x1 = sample_batched['image1']
@@ -61,7 +63,8 @@ def train():
             epoch_losses_train.append(loss.cpu().data.item())
             loss.backward()
             optimizer.step()
-
+            if epoch >= 10:
+                scheduler.step()
         losses_train.append(get_mean_of_list(epoch_losses_train))
         fig = plt.figure(figsize=(10, 10))
         sns.set_style('darkgrid')
