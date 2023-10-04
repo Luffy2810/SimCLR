@@ -24,22 +24,23 @@ class LinearNet(nn.Module):
         return(x)
     
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-resnet=make_model().to(device)
-if(os.path.isfile("results/model.pth")):
-    resnet.load_state_dict(torch.load("results/model.pth"))
-else:
-    print("Model Does not exist")
-
-
-dataloader_training_dataset = get_linear_dataloader()
-dataloader_testing_dataset = get_test_dataloader()
 
 def get_mean_of_list(L):
     return sum(L) / len(L)
 
 def Linear():
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+    resnet=make_model().to(device)
+    if(os.path.isfile("results/model.pth")):
+        resnet.load_state_dict(torch.load("results/model.pth"))
+    else:
+        print("Model Does not exist")
+
+
+    dataloader_training_dataset = get_linear_dataloader()
+    dataloader_testing_dataset = get_test_dataloader()
 
     if not os.path.exists('linear'):
         os.makedirs('linear')
