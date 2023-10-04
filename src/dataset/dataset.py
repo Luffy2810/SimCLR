@@ -39,7 +39,7 @@ class SSLDataset(Dataset):
         return res
 
     def mutate_image(self, img):
-        res = T.RandomResizedCrop(224)(img)
+        res = T.RandomResizedCrop(int(224*64/256))(img)
         res = self.get_color_distortion(1)(res)
         return res
 

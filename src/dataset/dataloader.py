@@ -21,7 +21,7 @@ def get_mutated_dataloader():
     labels_train = [x.split('_')[0] for x in names_train]
     tokens=convert_labels_to_tokens(labels_train)
     training_dataset_mutated = SSLDataset(root_folder+'/Compiled_train',names_train, labels_train,tokens, train=True,mutate=True)
-    dataloader_training_dl = DataLoader(training_dataset_mutated, batch_size=125, shuffle=True, num_workers=2)
+    dataloader_training_dl = DataLoader(training_dataset_mutated, batch_size=2048, shuffle=True, num_workers=2)
     return dataloader_training_dl
     
 def get_linear_dataloader():
