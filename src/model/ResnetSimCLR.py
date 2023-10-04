@@ -11,7 +11,7 @@ def make_model():
         ('added_relu1', nn.ReLU(inplace=True)),
         ('fc2', nn.Linear(100, 50)),
         ('added_relu2', nn.ReLU(inplace=True)),
-        ('fc3', nn.Linear(50, 25))
+        ('fc3', nn.Linear(50, 32))
     ]))
 
     resnet.fc = classifier
